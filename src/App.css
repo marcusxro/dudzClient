@@ -1,0 +1,430 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+
+* {
+  font-family: "Lexend", sans-serif;
+}
+
+.signInCon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+  background-color: #659dbd;
+  padding: 10px;
+}
+
+.signInCon>form {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 100%;
+  gap: 10px;
+  max-width: 500px;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+.signInCon>form .signInText {
+  font-size: clamp(2rem, 5vw, 5vw);
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.signInCon>form>input {
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+}
+
+.signInCon>form>button {
+  all: unset;
+  width: 150px;
+  height: 50px;
+  background-color: #fbeec1;
+  color: rgb(219, 185, 185);
+  text-align: center;
+  color: #659dbd;
+  font-weight: bold;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.signInCon>.bottomNav {
+  color: white;
+}
+
+.signInCon>.bottomNav span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.forgotCon {
+  width: 100%;
+  display: flex;
+  color: white;
+  align-items: center;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.forgotCons {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: flex-end;
+  text-align: center;
+  gap: 3px;
+  padding-left: auto;
+  color: white;
+}
+
+.forgotCons>span {
+  text-align: right;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.signUpCon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #659dbd;
+}
+
+.signUpCon>form {
+  display: flex;
+  padding: 10px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  max-width: 700px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signUpCon>form .signUpText {
+  font-size: clamp(2rem, 5vw, 5vw);
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.signUpCon>form>input {
+  width: 100%;
+  border-radius: 10px;
+  height: 30px;
+  outline: none;
+  border: none;
+  max-width: 100%;
+  padding: 5px;
+}
+
+.signUpCon>form>select {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.signUpCon>form>button {
+  all: unset;
+  height: 50px;
+  width: 150px;
+  text-align: center;
+  background-color: #fbeec1;
+  border-radius: 10px;
+  color: #659dbd;
+  font-weight: bold;
+
+}
+
+.already {
+  color: white;
+}
+
+.already span {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.forgotPwCon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+  height: 100vh;
+  color: white;
+  width: 100%;
+  background-color: #659dbd;
+}
+
+.forgotText {
+  font-size: clamp(2rem, 5vw, 3vw);
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.forgotPwCon>form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.forgotPwCon>form>input {
+  width: 100%;
+  height: 30px;
+  padding: 5px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+}
+
+.forgotPwCon>form>button {
+  all: unset;
+  height: 30px;
+  width: 150px;
+  text-align: center;
+  padding: 10px;
+  background-color: #fbeec1;
+  border-radius: 10px;
+  color: #659dbd;
+  font-weight: bold;
+}
+
+.forgotBot>span {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.logOut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+header {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  background-color: #659dbd;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  padding-left: 10px;
+  color: #fbeec1;
+}
+
+.logOutCon {
+  color: #fbeec1;
+  margin-right: 10px;
+  background-color: #fbeec1;
+  color: #659dbd;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+body {
+  background-color: #fbeec1;
+}
+
+.systemCon {
+  background-color: #fbeec1;
+  height: auto;
+}
+
+.midCon {
+  display: flex;
+  gap: 10px;
+}
+
+.midCon .btns {
+  text-decoration: none;
+  color: #659dbd;
+  background-color: #fbeec1;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.TableCon {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.TableCon table thead {
+  background-color: #659dbd;
+}
+ .firstTableCon {
+  margin-top: 20px;
+  padding-inline: 5%;
+width: 100%;
+}
+.firstTable {
+  margin-top: 20px;
+  padding-inline: 5%;
+}
+.TableCon .dataTable {
+  width: 100%;
+  margin-top: 20px;
+  padding-inline: 5%;
+  
+}
+.TableCon .secTable {
+  width: 100%;
+  margin-top: 20px;
+  padding-inline: 5%;
+  
+}
+
+.TableCon table thead tr th {
+  padding: 10px;
+}
+
+.TableCon .swiper-slide table tbody {
+  background-color: whitesmoke;
+}
+
+.TableCon  .swiper-slide table tbody tr td {
+  padding: 10px;
+}
+
+.swiper-slide .firstTable {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.secTable {
+  margin-top: 20px;
+}
+.swiper {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.swiper-slide-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.secTable tbody tr td {
+  width: 50%;
+}
+
+.addDataButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.addDataButton>button {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 30px;
+  background-color: #659dbd;
+  color: #fbeec1;
+  border-radius: 10px;
+}
+
+.addDataCon {
+  position: fixed;
+  background-color: #659dbd;
+  padding: 10px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 2px -1px 10px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 2px -1px 10px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px -1px 10px 0px rgba(0, 0, 0, 0.75);
+z-index: 22;
+border-radius: 20px;
+margin: 10px;
+}
+.btnActions {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.btnActions > button {
+  padding: 10px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  margin-top: 20px;
+  background-color:#fbeec1;
+  color: #659dbd;
+}
+.addDataCon .saveBtn {
+  padding: 15px;
+  outline: none;
+  border: none;
+  border-radius: 10px;
+  margin-top: 20px;
+  background-color:#fbeec1;
+  color: #659dbd;
+  display: flex;
+  align-self: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+}
+.notAllowed {
+  height: 90vh;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expences {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.remove {
+  padding: 10px;
+  background-color: #fbeec1;
+  width: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
