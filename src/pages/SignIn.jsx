@@ -54,10 +54,7 @@ const SignIn = () => {
                 <input required type="text" placeholder='Enter your email' value={email} onChange={(e) => { setEmail(e.target.value) }} />
                 <input   ref={passEl} required type="password" placeholder='Enter your password' value={password} onChange={(e) => { setPassword(e.target.value) }} />
                 <div className="bottom">
-                    <div className="forgotCon">
-                        <input onClick={() => {seePass()}} type="checkbox" name="check" id="" />
-                        <label htmlFor="check">Show password</label>
-                    </div>
+    
                     <div className="forgotCons">
                         forgot password? <span onClick={() => { nav('/Forgot') }}> click here!</span>
                     </div>

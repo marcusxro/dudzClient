@@ -428,3 +428,194 @@ margin: 10px;
   align-items: center;
   justify-content: center;
 }
+
+h1 {
+  width: 100%;
+  text-align: center;
+}
+
+
+.itemExpence {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+}
+
+
+.RecordsCon {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.firstTables {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+.recCon {
+  height: auto;
+  width: 100%;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: left;
+  padding-inline: 5%;
+}
+.recCon table {
+  width: 100%;
+  padding-inline: 5%;
+  height: auto;
+  margin-top: 20x;
+}
+
+.recCon table tr th {
+  background-color: #659dbd;
+}
+.recCon table tr td {
+  background-color: white;
+}
+
+.AddRec {
+  background-color: #659dbd;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  padding: 10px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  box-shadow: 1px -1px 11px 0px rgba(0,0,0,0.75);
+-webkit-box-shadow: 1px -1px 11px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: 1px -1px 11px 0px rgba(0,0,0,0.75);
+border-radius: 20px;
+}
+.addRecordCon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.addRecText {
+  text-align: center;
+  width: 100%;
+}
+.addRecordCon table tr th {
+  background-color: #fbeec1;
+  padding: 10px;
+
+}
+.close {
+  padding: 10px;
+  background-color: #fbeec1;
+  border-radius: 20px;
+  width: 80px;
+  text-align: center;
+}
+
+.submitBtn {
+  margin-top: 20px;
+}
+
+.submitBtn button {
+  padding: 10px;
+  background-color: #fbeec1;
+  border-radius: 20px;
+  color: #659dbd;
+  width: 120px;
+  text-align: center;
+  border: none;
+}
+
+.RecordsCon .swiper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.RecordsCon .swiper .swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.addRecord {
+  background-color: #659dbd;
+  color: #fbeec1;
+  margin-top: 20px;
+  font-size: 15px;
+  padding: 10px 10px;
+  border-radius: 20px;
+  border: none;
+}
+
+.recCon table tr th {
+  padding: 10px;
+}
+
+.recCon table tr td {
+  padding: 10px;
+}
+.recCon table tr td button {
+  padding: 10px 10px;
+  width: 100%;
+  margin: 5px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  background-color: #659dbd;
+  color:#fbeec1;
+}
+
+.editBtnCon button{
+  padding: 10px 10px;
+  width: 100%;
+  margin: 5px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  background-color: #659dbd;
+  color:#fbeec1;
+}
+.firstEditBtn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.firstEditBtn button  {
+  padding: 10px;
+  width: 30%;
+  margin: 5px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  background-color: #659dbd;
+  color:#fbeec1;
+}
+
+
+
+.recCon {
+  height: 80%;
+}
+.recCon .firstTables {
+  height: 20%;
+}
+.recTable {
+  height: 100vh;
+  overflow: hidden;
+  height: auto;
+}
+
+.recTable {
+  max-height: 500px; /* Set the maximum height */
+  overflow: auto; /* Enable scrolling if content exceeds the maximum height */
+}

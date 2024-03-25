@@ -6,11 +6,14 @@ const Header = () => {
     return (
         <header>
             <div className="logo">
-                Logo
+                Dudzchamchoi
             </div>
             <div className="midCon">
                 <div className='btns' onClick={() => {nav('/system')}}>
                     Inventory
+                </div>
+                <div className='btns' onClick={() => {nav('/Records')}}>
+                    Records
                 </div>
                 <div className='btns' onClick={() => {nav('/filemaintenance')}}>
                     File Maintenance

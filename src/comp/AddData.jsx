@@ -3,7 +3,7 @@ import axios from 'axios'
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../auth';
 
-const AddData = ({showModal}) => {
+const AddData = ({ showModal }) => {
 
     const [email, setEmail] = useState('')
     const [uid, setUid] = useState('')
@@ -12,23 +12,24 @@ const AddData = ({showModal}) => {
 
     useEffect(() => {
         const Iden = onAuthStateChanged(auth, (acc) => {
-            if(acc) {
-                setEmail(acc.email)
+            if (acc) {
                 setUid(acc.uid)
-            } 
+            }
         })
-        return () => {Iden()}
+        return () => { Iden() }
     }, [email])
 
     const [accName, setAcc] = useState([])
     const [pos, setPos] = useState("")
+
     useEffect(() => {
         axios.get('http://localhost:8080/GetAcc')
             .then((res) => {
                 setAcc(res.data)
                 const filteredData = res.data.filter((item) => item.Uid === uid)
-                setAcc(filteredData)
-              setPos(filteredData[0].position)
+                setAcc(filteredData[0])
+                setPos(filteredData[0].Position)
+                setEmail(filteredData[0].Username)
             }).catch((err) => {
                 console.log(err)
             })
@@ -37,11 +38,13 @@ const AddData = ({showModal}) => {
 
 
     const [rowData, setRowData] = useState([{ riceName: '', pricePerKilo: '', productSold: '' }]);
+    const [expenceRow, setExpenceRow] = useState([{ expence: '', expenceVal: '' }]);
+
 
     const handleAddRow = () => {
         setRowData([...rowData, { riceName: '', pricePerKilo: '', productSold: '' }]);
     };
-
+    
     const handleDecreaseRow = () => {
         if (rowData.length > 1) {
             const updatedRows = [...rowData];
@@ -58,18 +61,48 @@ const AddData = ({showModal}) => {
         updatedRows[index][name] = value;
         setRowData(updatedRows);
     };
-    const [Expences, setExpences] = useState('')
+
+
+    ////////////////////
+
+    const handleAddExpenseRow = () => {
+        setExpenceRow([...expenceRow, { expence: '', expenceVal: '' }]);
+        console.log(expenceRow)
+    };
+
+    const handleDecreaseExpenseRow = () => {
+        if (expenceRow.length > 1) {
+            setExpenceRow(expenceRow.slice(0, -1));
+        }
+    };
+
+    const handleExpenseChange = (index, e) => {
+        const { name, value } = e.target; // Destructured to get name and value
+        const updatedExpenses = [...expenceRow];
+        if (name === "expenceName") {
+            updatedExpenses[index].expence = value; // Update only the name
+        } else if (name === "expenceVal") {
+            updatedExpenses[index].expenceVal = value; // Update only the value
+        }
+        setExpenceRow(updatedExpenses);
+    };
     
     const sendData = () => {
         const rowDataToSend = rowData.map(row => ({
             riceName: row.riceName,
             pricePerKilo: row.pricePerKilo,
             productSold: row.productSold
-        }));    
+        }));
+    
+        const expencesToSend = expenceRow.map(item => ({
+            expence: item.expence,
+            expenceVal: item.expenceVal
+        })).filter(item => item.expence.trim() !== "" && item.expenceVal.trim() !== "");
+    
         axios.post('http://localhost:8080/SendData', {
             userName: email,
             Position: pos,
-            Expences: Expences,
+            Expences: expencesToSend.length > 0 ? expencesToSend : [], // Set to empty array if expencesToSend is empty
             data: rowDataToSend,
             date: date,
             Uid: uid
@@ -80,6 +113,10 @@ const AddData = ({showModal}) => {
         });
     };
     
+    
+    
+    
+
 
     return (
         <div className='addDataCon'>
@@ -89,8 +126,8 @@ const AddData = ({showModal}) => {
             <div className="firstTable">
                 <div className="tableName">DUDZCHAMCHOI INVENTORY</div>
                 <div className="date">Date: <input required type="date" value={date} onChange={(e) => { setDate(e.target.value) }} /></div>
-                <div className="user">users: {accName.Email} </div>
-                <div className="pos">Position: {accName.Position}</div>
+                <div className="user">user: {accName ? accName.Email : "Loading.."} </div>
+                <div className="pos">Position: {accName ? pos : "Loading.."}</div>
             </div>
             <table>
                 <thead>
@@ -114,11 +151,47 @@ const AddData = ({showModal}) => {
                 <button onClick={handleAddRow}>Add data</button>
                 <button onClick={handleDecreaseRow}>Decrease</button>
             </div>
+
             <div className="expences">
-                <input type="number" required placeholder='Enter expences' value={Expences} onChange={(e) => {setExpences(e.target.value)}} />
+                <table>
+                    <thead>
+                        <div className='btnActions'>
+                            <button onClick={handleAddExpenseRow}>Add data</button>
+                            <button onClick={handleDecreaseExpenseRow}>Decrease</button>
+                        </div>
+                    </thead>
+                    <tbody>
+                        {expenceRow.map((data, index) => (
+                            <tr key={index}>
+                                <td>
+                                    <input
+                                        type="text"
+                                        placeholder='Enter expences name'
+                                        name="expenceName"
+                                        value={data.expence}
+                                        onChange={(e) => handleExpenseChange(index, e)}
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="number"
+                                        placeholder='Enter expences value'
+                                        name="expenceVal"
+                                        value={data.expenceVal}
+                                        onChange={(e) => handleExpenseChange(index, e)}
+                                    />
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+
+                </table>
             </div>
-            <button className='saveBtn' onClick={() => {sendData()}}>save</button>
+
+            <button className='saveBtn' onClick={() => { sendData() }}>save</button>
         </div>
+
+
     );
 };
 

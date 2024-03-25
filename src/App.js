@@ -5,6 +5,7 @@ import SignUp from './pages/SignUp';
 import ForgotPw from './pages/ForgotPw';
 import System from './pages/System';
 import FileMain from './pages/FileMain';
+import Records from './pages/Records';
 
 
 
@@ -18,6 +19,7 @@ function App() {
         <Route path='/Forgot' element={<ForgotPw />} />
         <Route path='/System' element={<System />} />
         <Route path='/fileMaintenance' element={<FileMain />} />
+        <Route path='/Records' element={<Records />} />
         {/* <Route path='/system' 
         element={loading ? (authenticated ? <System /> : <Navigate to='/login' />) : <Loading />} /> */}
       </Routes>

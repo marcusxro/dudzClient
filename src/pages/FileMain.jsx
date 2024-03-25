@@ -14,7 +14,10 @@ const FileMain = () => {
     const [uid, setUid] = useState('');
     const [filtered, setFil] = useState([]);
     const [selectedIndex, setSelectedIndex] = useState(null);
-    const [editedData, setEditedData] = useState({});
+    const [editedData, setEditedData] = useState({ expence: '' });
+
+
+
     const nav = useNavigate()
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (acc) => {
@@ -49,7 +52,7 @@ const FileMain = () => {
                 console.log(err);
             });
     }, [uid]);
-    
+
 
     useEffect(() => {
         axios.get('http://localhost:8080/GetData')
@@ -105,12 +108,64 @@ const FileMain = () => {
         } catch (error) {
             console.error(error);
         }
+
     };
+
+
+    const [isEditExp, setEditEx] = useState('')
+
+    const [editedEx, setEditedEx] = useState('')
+    const [editedVal, setEditedVal] = useState('')
+
+    const getVal = (expencesName, expencesValue) => {
+        setEditedEx(expencesName)
+        setEditedVal(expencesValue)
+    }
+    const handleEditExpense = async (itemId, index) => {
+        try {
+            if (!itemId) {
+                console.error("Item ID is undefined");
+                return;
+            }
+
+            if (!editedVal || !editedEx) {
+                return alert("add value")
+            }
+
+            const response = await axios.put(`http://localhost:8080/updateEx/${itemId}/${index}`, {
+                expence: editedEx,
+                expenceVal: editedVal,
+            });
+            console.log(response.data.message);
+            setSelectedIndex(null);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+
+    const handleDeleteExpense = async (itemId, index) => {
+        try {
+            // Send a request to delete the expense with the specified index
+            await axios.delete(`http://localhost:8080/updateEx/${itemId}/${index}`);
+
+            // Update the local state to remove the deleted expense
+            const updatedData = [...data];
+            updatedData.forEach(item => {
+                item.Expences.splice(index, 1); // Remove the expense at the specified index
+            });
+            setData(updatedData);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const [isEq, setIsEq] = useState('')
 
     return (
         <div className='TableCon'>
             <Header />
-            {filtered.position !== "Owner" ? (
+            {filtered.Position !== "Owner" ? (
                 <div className='notAllowed'>You are not allowed here!</div>
             ) : (
                 <Swiper>
@@ -135,81 +190,161 @@ const FileMain = () => {
                                     {item.data.map((rowData, index) => (
                                         <tr key={index}>
                                             <td>
-                                                {rowData && index === selectedIndex ? (
-                                                    <input
-                                                        value={editedData.riceName || rowData.riceName}
-                                                        onChange={(e) => handleInputChange(e, 'riceName')}
-                                                    />
-                                                ) : (
-                                                    rowData && rowData.riceName
-                                                )}
+                                                {rowData ? (
+                                                    index === selectedIndex ? (
+                                                        <input
+                                                            required
+                                                            value={editedData.riceName}
+                                                            onChange={(e) => handleInputChange(e, 'riceName')}
+                                                        />
+                                                    ) : (
+                                                        rowData.riceName
+                                                    )
+                                                ) : null}
                                             </td>
 
                                             <td>
-                                                {rowData && index === selectedIndex ? (
-                                                    <input
-                                                        value={editedData.pricePerKilo || rowData.pricePerKilo}
-                                                        onChange={(e) => handleInputChange(e, 'pricePerKilo')}
-                                                    />
-                                                ) : (
-                                                    rowData && rowData.pricePerKilo
-                                                )}
+                                                {rowData ? (
+                                                    index === selectedIndex ? (
+                                                        <input
+                                                            value={editedData.pricePerKilo}
+                                                            onChange={(e) => handleInputChange(e, 'pricePerKilo')}
+                                                        />
+                                                    ) : (
+                                                        rowData.pricePerKilo
+                                                    )
+                                                ) : null}
                                             </td>
 
                                             <td>
-                                                {rowData && index === selectedIndex ? (
-                                                    <input
-                                                        value={editedData.productSold || rowData.productSold}
-                                                        onChange={(e) => handleInputChange(e, 'productSold')}
-                                                    />
-                                                ) : (
-                                                    rowData && rowData.productSold
-                                                )}
+                                                {rowData ? (
+                                                    index === selectedIndex ? (
+                                                        <input
+                                                            value={editedData.productSold}
+                                                            onChange={(e) => handleInputChange(e, 'productSold')}
+                                                        />
+                                                    ) : (
+                                                        rowData.productSold
+                                                    )
+                                                ) : null}
                                             </td>
-                                            <td>
-                                                {rowData && index === selectedIndex ? (
-                                                    <>
-                                                        <button
-                                                            onClick={() => {
-                                                                handleSave(item._id, index);
-                                                                handleSaveToDb(item._id, index);
-                                                            }}
-                                                        >
-                                                            SAVE
-                                                        </button>
-                                                        <button onClick={() => handleCancel()}>CANCEL</button>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <button onClick={() => handleEdit(index)}>EDIT</button>
-                                                        <button onClick={() => handleDelete(item._id, index)}>DELETE</button>
-                                                    </>
-                                                )}
+                                            <td className='firstEditBtn'>
+                                                {rowData ? (
+                                                    index === selectedIndex ? (
+                                                        <>
+                                                            <button
+                                                                onClick={() => {
+                                                                    handleSave(item._id, index);
+                                                                    handleSaveToDb(item._id, index);
+                                                                }}
+                                                            >
+                                                                SAVE
+                                                            </button>
+                                                            <button onClick={() => handleCancel()}>CANCEL</button>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <button onClick={() => { handleEdit(index); }}>EDIT</button>
+                                                            <button onClick={() => handleDelete(item._id, index)}>DELETE</button>
+                                                        </>
+                                                    )
+                                                ) : null}
                                             </td>
                                         </tr>
                                     ))}
+                                </tbody>
+                                <tbody>
+                                    <tr>
+                                        <td>Total sales</td>
+                                        <td>
+                                            {item.data ?
+                                                item.data.reduce((total, dataItem) => total + parseFloat(dataItem.pricePerKilo || 0), 0)
+                                                : 0
+                                            }
+                                        </td>
+                                            <td></td>
+                                            <td></td>
+                                    </tr>
                                 </tbody>
                             </table>
                             <table className='secTable'>
                                 <tbody>
                                     <tr>
                                         <th>Expenses</th>
-                                        <th>Total sold today</th>
+                                        <th className='salesData'>Total sales today</th>
+                                        <th>actions</th>
                                     </tr>
-                                    <tr>
-                                        <td>
-                                        {item.Expences}
-                                        </td>
-                                        <td>
-                                            {item.data ? item.data.reduce((total, dataItem) => {
-                                                if (dataItem) {
-                                                    return total + parseInt(dataItem.productSold);
-                                                } else {
-                                                    return total;
-                                                }
-                                            }, 0) : 0}
-                                        </td>
-                                    </tr>
+                                    {item.Expences.filter((expenceItem) => expenceItem !== null).map((items, index) => (
+                                        <tr key={index}>
+
+                                            {isEq === index ? (
+                                                <td>
+                                                    <input required type="text" value={editedEx} placeholder='Enter Expence name' onChange={(e) => { setEditedEx(e.target.value) }} /> {/* This is where the error likely occurs */}
+                                                    <input required type='number' value={editedVal} placeholder='Enter Expence value' onChange={(e) => { setEditedVal(e.target.value) }} /> {/* This is where the error likely occurs */}
+                                                </td>
+                                            ) : (
+                                                <td>
+                                                    <div className="itemExpence">
+                                                        <div className="firstEx">
+                                                            {items.expence ? items.expence : 'No expence recorded'} {/* Add a null check for items.expence */}
+                                                        </div>
+                                                        <div className="expenceVal">
+                                                            {items.expenceVal ? items.expenceVal : 'No expence value'} {/* Add a null check for items.expenceVal */}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            )}
+                                            <td className='salesData'>
+                                                <div>
+                                                    {(!item.Expences || item.Expences.length === 0) ? (
+                                                        item.data ? item.data.reduce((total, dataItem) => {
+                                                            if (dataItem) {
+                                                                return total + parseInt(dataItem.pricePerKilo);
+                                                            } else {
+                                                                return total;
+                                                            }
+                                                        }, 0) : 0
+                                                    ) : (
+                                                        (item.Expences && item.Expences.length > 0) ? (
+                                                            item.Expences.reduce((total, expenseItem) => {
+                                                                if (expenseItem && expenseItem.expenceVal !== null && expenseItem.expenceVal !== undefined) {
+                                                                    return total + parseFloat(expenseItem.expenceVal);
+                                                                }
+                                                                return total;
+                                                            }, 0) -
+                                                            (item.data ? item.data.reduce((total, dataItem) => {
+                                                                if (dataItem) {
+                                                                    return total + (parseFloat(dataItem.pricePerKilo) || 0); // Ensure pricePerKilo is parsed as float
+                                                                } else {
+                                                                    return total;
+                                                                }
+                                                            }, 0) : 0)
+                                                        ) : (
+                                                            item.data ? (
+                                                                item.data.reduce((total, dataItem) => {
+                                                                    return total + (parseFloat(dataItem.pricePerKilo) || 0);
+                                                                }, 0)
+                                                            ) : 0
+                                                        )
+                                                    )}
+                                                </div>
+                                            </td>
+                                            <td className='editBtnCon'>
+                                                {isEq === index ? (
+                                                    <>
+                                                        <button onClick={() => { setIsEq(null); handleEditExpense(item._id, index) }}>Save</button>
+                                                        <button onClick={() => setIsEq(null)}>Cancel</button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <button onClick={() => { setIsEq(index); getVal(items.expence, items.expenceVal) }}>Edit</button>
+                                                        <button onClick={() => handleDeleteExpense(item._id, index)}>Delete</button>
+                                                    </>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+
                                 </tbody>
                             </table>
                         </SwiperSlide>
