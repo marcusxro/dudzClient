@@ -13,6 +13,7 @@ const ForgotPw = () => {
             .then(() => {
                 console.log("sent")
                 setEmail('')
+                alert('Verification sent! check your email')
             })
             .catch((error) => {
                 console.log(error)

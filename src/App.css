@@ -6,24 +6,56 @@
 
 .signInCon {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-around;
   height: 100vh;
+  overflow-y: auto;
   background-color: #659dbd;
-  padding: 10px;
+  position: relative;
 }
+
+
+.sideImg {
+  width: 100%;
+  height: 100%;
+  background-color: #659dbd;
+}
+
+
+@media only screen and (max-width: 800px) {
+  .sideImg {
+    display: none;
+  }
+}
+
+.sideImg img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
 
 .signInCon>form {
   display: flex;
   flex-direction: column;
   padding: 10px;
-  width: 100%;
+  width: 70%;
   gap: 10px;
-  max-width: 500px;
   align-items: center;
   justify-content: center;
   margin: 10px;
+}
+.bottomNav {
+  position: absolute;
+  bottom: 10%;
+  color: #fff;
+}
+
+.bottomNav span {
+  color: white;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .signInCon>form .signInText {
@@ -296,6 +328,7 @@ width: 100%;
   width: 100%;
   margin-top: 20px;
   padding-inline: 5%;
+  margin-bottom: 20px;
   
 }
 
@@ -413,12 +446,19 @@ margin: 10px;
 
 .expences {
   display: flex;
-  align-content: center;
-  justify-content: center;
+  align-items: center;
   width: 100%;
   margin-top: 20px;
+  flex-direction: column;
+}
+.expences table {
+  width: 100%;
+background-color: #659dbd;
 }
 
+.expences input {
+  width: 100%;
+}
 .remove {
   padding: 10px;
   background-color: #fbeec1;
@@ -471,6 +511,9 @@ h1 {
   text-align: left;
   padding-inline: 5%;
 }
+.recCon input {
+  width: 60%;
+}
 .recCon table {
   width: 100%;
   padding-inline: 5%;
@@ -507,6 +550,10 @@ border-radius: 20px;
 .addRecText {
   text-align: center;
   width: 100%;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 20px;
 }
 .addRecordCon table tr th {
   background-color: #fbeec1;
@@ -553,8 +600,14 @@ border-radius: 20px;
   margin-top: 20px;
   font-size: 15px;
   padding: 10px 10px;
+  height: 50px;
+  width: 50px;
   border-radius: 20px;
+  position: fixed;
+  z-index: 2222;
   border: none;
+  right: 3%;
+  bottom: 10%;
 }
 
 .recCon table tr th {
@@ -563,6 +616,7 @@ border-radius: 20px;
 
 .recCon table tr td {
   padding: 10px;
+  overflow: hidden;
 }
 .recCon table tr td button {
   padding: 10px 10px;
@@ -619,3 +673,292 @@ border-radius: 20px;
   max-height: 500px; /* Set the maximum height */
   overflow: auto; /* Enable scrolling if content exceeds the maximum height */
 }
+
+
+.imageCon {
+  height: 100px;
+  width: 100px;
+}
+
+.imageCon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: white;
+}
+
+.recCon .recTable table tbody td {
+  overflow: hidden;
+  background-color: red;
+}
+
+
+
+.totalTr {
+  background-color: white;
+  width: 100%;
+}
+
+
+.addDataCon table tbody tr td input {
+  width: 98%;
+  margin: 1px;
+  padding: 2px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+
+.totalSalesTr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1px;
+}
+
+.expencesTr {
+  background-color: white;
+}
+
+.totalSalesTr{
+  margin-top: 20px;
+
+}
+
+.cal {
+  background-color: white;
+  color: green;
+  font-weight: bold;
+  width: 100%;
+}
+
+.static {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.staticCon {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  background-image: url('./imgs/BgTwo.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.staticTextCon {
+  background-color: #fbeec1;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 16px 0px #659dbd;
+-webkit-box-shadow: 0px 0px 16px 0px #659dbd;
+-moz-box-shadow: 0px 0px 16px 0px #659dbd;
+}
+.staticText{
+  font-size: clamp(2rem, 5vw, 5rem);
+  font-weight: bold;
+  line-height: 99%;
+  text-transform: capitalize;
+  text-align: center;
+}
+.staticText span {
+  color: #659dbd;
+}
+.static .gridCon {
+  padding: 10px;
+  display: flex;
+  width: 100%;
+  max-width: 80%;
+  gap: 10px;
+  margin-top: 5%;
+}
+
+.gridItem {
+  background-color: white;
+  color: black;
+  width: 100%;
+  max-width: 700px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.gridTitle {
+  background-color: #659dbd;
+  padding: 10px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  width: 100%;
+}
+.gridDesc {
+  text-transform: capitalize;
+  padding: 10px;
+  text-align: left;
+  border-top: 1px solid #ccc;
+}
+
+.gridItem .image {
+  height: 200px;
+  width: 200px;
+  
+}
+
+.staticDesc {
+  text-align: center;
+}
+
+.gridItem .image img{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+} 
+
+.navTo {
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  color: white;
+  background-color: #659dbd;
+  margin-top: auto
+}
+
+
+@media only screen and (max-width: 1050px) {
+  .static .gridCon {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+  }
+  .static {
+    height: auto;
+  }
+  .staticCon {
+    overflow: visible;
+    height: auto;
+    padding: 10px;
+  }
+}
+
+
+@media only screen and (max-width: 650px) {
+.midCon {
+  display: none;
+}
+.static .gridCon {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+}
+}
+
+.manageUsers {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.manageUserCon {
+  height: 75%;
+  display: flex;
+  align-items: center;
+  padding: 5%;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5%;
+  overflow-y: auto;
+  
+}
+
+.manageUserCon table {
+  width: 100%;
+  height: 100%;
+  max-height: 500px;
+  overflow-y: auto;
+  background-color: #659dbd;
+}
+
+.manageUserCon table thead tr {
+  background-color: #659dbd;
+  padding: 10px;
+  color: white;
+}
+
+.manageUserCon table thead td {
+  padding: 10px;
+}
+
+.manageUserCon table tbody tr td {
+  background-color: #fff;
+  padding: 10px;
+  color: black;
+}
+
+.manageUserCon table tbody tr td .manageConBtn {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.manageUserCon table tbody tr td .manageConBtn button {
+  width: 100%;
+  background-color: #659dbd;
+  color: #ccc;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  padding: 5px;
+}
+
+
+  .manageUserCon .manageConBtn .recover {
+    background-color: green;
+  }  .manageUserCon .manageConBtn .del {
+    background-color: red;
+  }
+
+  .manageUserText {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: bold;
+    text-align: center; 
+    padding-top: 30vh;
+  }
+
+  .manageUserText span{
+    color: #659dbd;
+  }
+
+  .manageUserCon table tbody tr td span {
+    color: white;
+    padding: 3px;
+    background-color: green;
+    border-radius: 5px;
+  }
+
+  .manageUserCon table tbody .you td {
+    background-color: #ccc;
+    color: black;
+    font-weight: bold;
+  }
+
+  .midCon .btns {
+    cursor: pointer;
+  }
+
+  .midCon .btns:hover {
+    background-color: #659dbd;
+    border: 1px solid #fbeec1;
+    color: #fbeec1;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .logOutCon:hover {
+    background-color: #659dbd;
+    border: 1px solid #fbeec1;
+    cursor: pointer;
+    color: #fbeec1;
+    transition: all 0.2s ease-in-out;
+  }

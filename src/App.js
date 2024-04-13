@@ -6,6 +6,8 @@ import ForgotPw from './pages/ForgotPw';
 import System from './pages/System';
 import FileMain from './pages/FileMain';
 import Records from './pages/Records';
+import Static from './pages/Static';
+import ManageUsers from './pages/ManageUsers';
 
 
 
@@ -17,9 +19,11 @@ function App() {
         <Route path='/' element={<SignIn />} />
         <Route path='/SignUp' element={<SignUp />} />
         <Route path='/Forgot' element={<ForgotPw />} />
-        <Route path='/System' element={<System />} />
+        <Route path='/System' element={<Records />} />
         <Route path='/fileMaintenance' element={<FileMain />} />
-        <Route path='/Records' element={<Records />} />
+        <Route path='/Records' element={<System />} />
+        <Route path='/Home' element={<Static />} />
+        <Route path='/Manage' element={<ManageUsers />} />
         {/* <Route path='/system' 
         element={loading ? (authenticated ? <System /> : <Navigate to='/login' />) : <Loading />} /> */}
       </Routes>

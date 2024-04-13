@@ -37,14 +37,24 @@ const AddData = ({ showModal }) => {
 
 
 
-    const [rowData, setRowData] = useState([{ riceName: '', pricePerKilo: '', productSold: '' }]);
+    const [rowData, setRowData] = useState([
+        { riceName: 'Malagkit', pricePerKilo: '60', productQuantity: '', productSold: '' },
+        { riceName: 'Maalsa', pricePerKilo: '65', productQuantity: '', productSold: '' },
+        { riceName: 'Coco Pandan', pricePerKilo: '50', productQuantity: '', productSold: '' },
+        { riceName: 'Jasmine Mindoro', pricePerKilo: '60', productQuantity: '', productSold: '' },
+        { riceName: 'Island', pricePerKilo: '50', productQuantity: '', productSold: '' },
+        { riceName: 'Coco Pandan', pricePerKilo: '50', productQuantity: '', productSold: '' },
+        { riceName: 'Queen Jasmine', pricePerKilo: '50', productQuantity: '', productSold: '' },
+        { riceName: 'Dinorado', pricePerKilo: '65', productQuantity: '', productSold: '' },
+
+    ]);
     const [expenceRow, setExpenceRow] = useState([{ expence: '', expenceVal: '' }]);
 
 
     const handleAddRow = () => {
         setRowData([...rowData, { riceName: '', pricePerKilo: '', productSold: '' }]);
     };
-    
+
     const handleDecreaseRow = () => {
         if (rowData.length > 1) {
             const updatedRows = [...rowData];
@@ -60,6 +70,9 @@ const AddData = ({ showModal }) => {
         const updatedRows = [...rowData];
         updatedRows[index][name] = value;
         setRowData(updatedRows);
+
+
+
     };
 
 
@@ -86,25 +99,26 @@ const AddData = ({ showModal }) => {
         }
         setExpenceRow(updatedExpenses);
     };
-    
+
     const sendData = () => {
         const rowDataToSend = rowData.map(row => ({
             riceName: row.riceName,
             pricePerKilo: row.pricePerKilo,
-            productSold: row.productSold
+            productSold: row.productSold,
+            productQuantity: row.productQuantity
         }));
-    
+
         const expencesToSend = expenceRow.map(item => ({
             expence: item.expence,
             expenceVal: item.expenceVal
         })).filter(item => item.expence.trim() !== "" && item.expenceVal.trim() !== "");
-    
+
         axios.post('http://localhost:8080/SendData', {
             userName: email,
             Position: pos,
             Expences: expencesToSend.length > 0 ? expencesToSend : [], // Set to empty array if expencesToSend is empty
             data: rowDataToSend,
-            date: date,
+            date: Date.now(),
             Uid: uid
         }).then(() => {
             console.log("data sent");
@@ -112,10 +126,7 @@ const AddData = ({ showModal }) => {
             console.log(err);
         });
     };
-    
-    
-    
-    
+
 
 
     return (
@@ -125,7 +136,6 @@ const AddData = ({ showModal }) => {
             </div>
             <div className="firstTable">
                 <div className="tableName">DUDZCHAMCHOI INVENTORY</div>
-                <div className="date">Date: <input required type="date" value={date} onChange={(e) => { setDate(e.target.value) }} /></div>
                 <div className="user">user: {accName ? accName.Email : "Loading.."} </div>
                 <div className="pos">Position: {accName ? pos : "Loading.."}</div>
             </div>
@@ -134,6 +144,7 @@ const AddData = ({ showModal }) => {
                     <tr>
                         <th>RICE NAME</th>
                         <th>PRICE PER KILO</th>
+                        <th>PRODUCT QUANTITY</th>
                         <th>PRODUCT SOLD</th>
                     </tr>
                 </thead>
@@ -142,23 +153,35 @@ const AddData = ({ showModal }) => {
                         <tr key={index}>
                             <td><input type="text" name="riceName" value={data.riceName} onChange={(e) => handleChange(index, e)} /></td>
                             <td><input type="number" name="pricePerKilo" value={data.pricePerKilo} onChange={(e) => handleChange(index, e)} /></td>
-                            <td><input type="number" name="productSold" value={data.productSold} onChange={(e) => handleChange(index, e)} /></td>
+                            <td><input type="number" name="productQuantity" value={data.productQuantity} onChange={(e) => handleChange(index, e)} /></td>
+                            <td><input type="number" name="productSold" value={data.pricePerKilo * data.productQuantity} onChange={(e) => handleChange(index, e)} /></td>
                         </tr>
                     ))}
+                    <tr className='totalTr'>
+                        <td>Total Sales</td>
+                        <td></td>
+                        <td>
+                            {rowData.reduce((total, data) => total +
+                                (parseFloat(data.productQuantity) || 0), 0)
+                                .toLocaleString('en-PH', { style: "currency", currency: 'PHP' })}
+                        </td>
+                        <td>
+                            {rowData.reduce((total, data) => total +
+                                (parseFloat(data.pricePerKilo) * parseFloat(data.productQuantity) || 0), 0)
+                                .toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div className='btnActions'>
-                <button onClick={handleAddRow}>Add data</button>
+                <button onClick={handleAddRow}>Insert new Rice</button>
                 <button onClick={handleDecreaseRow}>Decrease</button>
             </div>
 
             <div className="expences">
                 <table>
                     <thead>
-                        <div className='btnActions'>
-                            <button onClick={handleAddExpenseRow}>Add data</button>
-                            <button onClick={handleDecreaseExpenseRow}>Decrease</button>
-                        </div>
+                        <th>Expencess</th>
                     </thead>
                     <tbody>
                         {expenceRow.map((data, index) => (
@@ -183,11 +206,29 @@ const AddData = ({ showModal }) => {
                                 </td>
                             </tr>
                         ))}
+                        <tr className='expencesTr'>
+                            <td>Total Expences</td>
+                            <td>{expenceRow.reduce((total, data) => (parseFloat(total) + parseFloat(data.expenceVal) || 0), 0)
+                                .toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}</td>
+                        </tr>
                     </tbody>
 
                 </table>
+                <div className='btnActions'>
+                    <button onClick={handleAddExpenseRow}>Insert Expences</button>
+                    <button onClick={handleDecreaseExpenseRow}>Decrease Expences</button>
+                </div>
             </div>
 
+            <div className="totalSalesTr">
+                <div className="cal">Total Sales</div>
+                <div className="cal">
+                    {(
+                        expenceRow.reduce((totalExpences, data) => totalExpences + parseInt(data.expenceVal || 0), 0) -
+                        rowData.reduce((totalProductsSold, dta) => totalProductsSold + parseInt(dta.pricePerKilo * dta.productQuantity|| 0), 0)
+                    ).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}
+                </div>
+            </div>
             <button className='saveBtn' onClick={() => { sendData() }}>save</button>
         </div>
 

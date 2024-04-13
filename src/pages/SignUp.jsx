@@ -35,7 +35,9 @@ const SignUp = () => {
                         Sex: chooseSex,
                         Password: password,
                         Position: position,
-                        Uid: acc.user.uid
+                        Uid: acc.user.uid,
+                        isDeleted: false
+
                     }).then(() => {
                         console.log("acc details sent")
                         alert("Account created!")

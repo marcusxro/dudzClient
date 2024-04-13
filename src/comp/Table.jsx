@@ -6,12 +6,13 @@ import 'swiper/css';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../auth';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment';
 
 const Table = () => {
     const [show, setShow] = useState(false)
     const [data, setData] = useState([])
     const [uid, setUid] = useState('');
-
+    const nav = useNavigate()
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (acc) => {
             if (acc) {
@@ -42,6 +43,10 @@ const Table = () => {
                 setAcc(res.data[0])
                 const filteredAcc = res.data.filter((item) => item.Uid === uid);
                 setUserName(filteredAcc[0]);
+                if(userName.isDeleted) {
+                    alert("Your account has been deleted by owner")
+                    nav('/')
+                }
             }).catch((err) => {
                 console.log(err)
             })
@@ -53,23 +58,22 @@ const Table = () => {
     }
     return (
         <div className='TableCon'>
-            <h1>Welcome {userName ? userName.Username : "Loading..."}</h1>
-
             <Swiper>
                 {data.slice().reverse().map((item) => (
                     <SwiperSlide key={item._id}>
                         <div className="firstTable">
                             <div className="tableName">DUDZCHAMCHOI INVENTORY</div>
-                            <div className="date">Date: {item.date}</div>
-                            <div className="user">user: {item.userName} </div>
-
+                            <div className="date">Date: {moment(new Date(parseInt(item.date, 10))).format('MMMM Do YYYY, h:mm a')}</div>
+                            <div className="user">User: {item.userName} </div>
                             <div className="pos">Position: {item.Position}</div>
+                            <div className="pos">Data Reference: {item._id}</div>
                         </div>
                         <table className='dataTable'>
                             <thead>
                                 <tr>
                                     <th>RICE NAME</th>
                                     <th>PRICE PER KILO</th>
+                                    <th>PRODUCT QUANTITY</th>
                                     <th>PRODUCT SOLD</th>
 
                                 </tr>
@@ -83,8 +87,10 @@ const Table = () => {
                                         <td>
                                             {rowData.pricePerKilo}
                                         </td>
+                                        <td> {rowData.productQuantity}</td>
                                         <td>
-                                            {rowData.productSold}
+                                            {(parseFloat(rowData.pricePerKilo) * parseFloat(rowData.productQuantity)).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}
+
                                         </td>
                                     </tr>
                                 ))}
@@ -94,12 +100,27 @@ const Table = () => {
                                 <tr>
                                     <td>Total sales</td>
                                     <td>
-                                        {item.data ?
+                                        {item.data &&
                                             item.data.reduce((total, dataItem) => total + parseFloat(dataItem.pricePerKilo || 0), 0)
-                                            : 0
+                                                .toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
                                         }
                                     </td>
-                                        <td></td>
+                                    <td>
+                                        {
+                                            item.data &&
+                                            item.data.reduce((total, data) =>
+                                                total + parseFloat(data.productQuantity || 0), 0)
+                                                .toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.data &&
+                                            item.data.reduce((total, data) =>
+                                                total + (parseFloat(data.pricePerKilo) * parseFloat(data.productQuantity) || 0), 0)
+                                                .toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
+                                        }
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -130,40 +151,39 @@ const Table = () => {
                                     </td>
                                     <tr>
                                         <div>
-                                            {(!item.Expences || item.Expences.length === 0) ? (
-                                                item.data ? item.data.reduce((total, dataItem) => {
-                                                    if (dataItem) {
-                                                        return total + parseInt(dataItem.pricePerKilo);
-                                                    } else {
-                                                        return total;
-                                                    }
-                                                }, 0) : 0
-                                            ) : (
-                                                (item.Expences && item.Expences.length > 0) ? (
-                                                    item.Expences.reduce((total, expenseItem) => {
-                                                        if (expenseItem && expenseItem.expenceVal !== null && expenseItem.expenceVal !== undefined) {
-                                                            return total + parseFloat(expenseItem.expenceVal);
-                                                        }
-                                                        return total;
-                                                    }, 0) -
+                                            {
+                                                (!item.Expences || item.Expences.length === 0) ? (
                                                     (item.data ? item.data.reduce((total, dataItem) => {
                                                         if (dataItem) {
-                                                            return total + (parseFloat(dataItem.pricePerKilo) || 0); // Ensure pricePerKilo is parsed as float
+                                                            return total + parseFloat(dataItem.pricePerKilo);
                                                         } else {
                                                             return total;
                                                         }
-                                                    }, 0) : 0)
+                                                    }, 0) : 0).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
                                                 ) : (
-                                                    item.data ? (
-                                                        item.data.reduce((total, dataItem) => {
-                                                            return total + (parseFloat(dataItem.pricePerKilo) || 0);
-                                                        }, 0)
-                                                    ) : 0
+                                                    (item.Expences && item.Expences.length > 0) ? (
+                                                        item.Expences.reduce((total, expenseItem) => {
+                                                            if (expenseItem && expenseItem.expenceVal !== null && expenseItem.expenceVal !== undefined) {
+                                                                return total + parseFloat(expenseItem.expenceVal);
+                                                            }
+                                                            return total;
+                                                        }, 0) - (item.data ? item.data.reduce((total, dataItem) => {
+                                                            if (dataItem) {
+                                                                return total + parseFloat(dataItem.pricePerKilo * dataItem.productQuantity || 0);
+                                                            } else {
+                                                                return total;
+                                                            }
+                                                        }, 0) : 0)
+                                                    ).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
+                                                        : (
+                                                            item.data ? (
+                                                                item.data.reduce((total, dataItem) => {
+                                                                    return total + parseFloat(dataItem.pricePerKilo || 0);
+                                                                }, 0)
+                                                            ) : 0
+                                                        )
                                                 )
-                                            )}
-
-
-
+                                            }
                                         </div>
 
 

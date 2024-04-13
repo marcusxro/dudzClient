@@ -8,6 +8,7 @@ const System = () => {
     const nav = useNavigate()
     const [email, setEmail] = useState()
     document.title = "DUDZCHAMCHOI | System"
+    
     useEffect(() => {
         const Iden = onAuthStateChanged(auth, (acc) => {
             if(acc) {

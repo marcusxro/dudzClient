@@ -6,6 +6,7 @@ import Header from '../comp/Header';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../auth';
 import { useNavigate } from 'react-router-dom';
+import moment from 'moment'
 
 const FileMain = () => {
     const [data, setData] = useState([]);
@@ -40,6 +41,11 @@ const FileMain = () => {
                     const filteredData = res.data.filter((item) => item.Uid === uid);
                     if (filteredData.length > 0) {
                         setFil(filteredData[0]);
+                        console.log(filteredData)
+                        if (filtered.isDeleted === true) {
+                            alert("Your account has been deleted by owner")
+                            nav('/')
+                        }
                     } else {
                         console.log("No matching elements found for the given UID.");
                     }
@@ -51,7 +57,7 @@ const FileMain = () => {
             .catch((err) => {
                 console.log(err);
             });
-    }, [uid]);
+    }, [uid, filtered]);
 
 
     useEffect(() => {
@@ -86,11 +92,12 @@ const FileMain = () => {
 
     const handleSaveToDb = async (itemId, index) => {
         try {
-            const { riceName, pricePerKilo, productSold } = editedData;
+            const { riceName, pricePerKilo, productQuantity } = editedData;
+
             const response = await axios.put(`http://localhost:8080/update/${itemId}/${index}`, {
                 riceName,
                 pricePerKilo,
-                productSold
+                productQuantity
             });
             console.log(response.data.message);
             setSelectedIndex(null);
@@ -169,11 +176,11 @@ const FileMain = () => {
                 <div className='notAllowed'>You are not allowed here!</div>
             ) : (
                 <Swiper>
-                    {data.slice().reverse().map((item) => (
+                    {data && data.slice().reverse().map((item) => (
                         <SwiperSlide key={item._id}>
                             <div className="firstTable">
                                 <div className="tableName">DUDZCHAMCHOI INVENTORY</div>
-                                <div className="date">Date: {item.date}</div>
+                                <div className="date">Date: {moment(new Date(parseInt(item.date, 10))).format('MMMM Do YYYY, h:mm a')}</div>
                                 <div className="user">user: {item.userName} </div>
                                 <div className="pos">Position: {item.Position}</div>
                             </div>
@@ -182,6 +189,7 @@ const FileMain = () => {
                                     <tr>
                                         <th>RICE NAME</th>
                                         <th>PRICE PER KILO</th>
+                                        <th>PRODUCT QUANTITY</th>
                                         <th>PRODUCT SOLD</th>
                                         <th>ACTIONS</th>
                                     </tr>
@@ -190,7 +198,7 @@ const FileMain = () => {
                                     {item.data.map((rowData, index) => (
                                         <tr key={index}>
                                             <td>
-                                                {rowData ? (
+                                                {rowData && rowData ? (
                                                     index === selectedIndex ? (
                                                         <input
                                                             required
@@ -198,20 +206,20 @@ const FileMain = () => {
                                                             onChange={(e) => handleInputChange(e, 'riceName')}
                                                         />
                                                     ) : (
-                                                        rowData.riceName
+                                                        rowData.riceName || ''
                                                     )
                                                 ) : null}
                                             </td>
 
                                             <td>
-                                                {rowData ? (
+                                                {rowData && rowData ? (
                                                     index === selectedIndex ? (
                                                         <input
                                                             value={editedData.pricePerKilo}
                                                             onChange={(e) => handleInputChange(e, 'pricePerKilo')}
                                                         />
                                                     ) : (
-                                                        rowData.pricePerKilo
+                                                        rowData.pricePerKilo || ''
                                                     )
                                                 ) : null}
                                             </td>
@@ -220,16 +228,20 @@ const FileMain = () => {
                                                 {rowData ? (
                                                     index === selectedIndex ? (
                                                         <input
-                                                            value={editedData.productSold}
-                                                            onChange={(e) => handleInputChange(e, 'productSold')}
+                                                            value={editedData.productQuantity}
+                                                            onChange={(e) => handleInputChange(e, 'productQuantity')}
                                                         />
                                                     ) : (
-                                                        rowData.productSold
+                                                        rowData.productQuantity || ''
                                                     )
                                                 ) : null}
                                             </td>
+                                            <td>
+
+                                                {rowData && (parseFloat(rowData.pricePerKilo) * parseFloat(rowData.productQuantity)).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })}
+                                            </td>
                                             <td className='firstEditBtn'>
-                                                {rowData ? (
+                                                {rowData && rowData ? (
                                                     index === selectedIndex ? (
                                                         <>
                                                             <button
@@ -250,6 +262,7 @@ const FileMain = () => {
                                                     )
                                                 ) : null}
                                             </td>
+
                                         </tr>
                                     ))}
                                 </tbody>
@@ -258,12 +271,28 @@ const FileMain = () => {
                                         <td>Total sales</td>
                                         <td>
                                             {item.data ?
-                                                item.data.reduce((total, dataItem) => total + parseFloat(dataItem.pricePerKilo || 0), 0)
+                                                item.data &&
+                                                item.data.reduce((total, dataItem) => total + parseFloat(dataItem && dataItem.pricePerKilo || 0), 0)
                                                 : 0
                                             }
                                         </td>
-                                            <td></td>
-                                            <td></td>
+                                        <td>
+                                            {
+                                                item.data &&
+                                                item.data.reduce((total, data) =>
+                                                    total + parseFloat(data && data.productQuantity || 0), 0)
+                                                    .toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
+                                            }
+                                        </td>
+                                        <td>
+                                            {
+                                                item.data &&
+                                                item.data.reduce((total, data) =>
+                                                    total + (parseFloat(data && data.pricePerKilo) * parseFloat(data && data.productQuantity) || 0), 0)
+                                                    .toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
+                                            }
+                                        </td>
+                                        <td></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -296,37 +325,41 @@ const FileMain = () => {
                                             )}
                                             <td className='salesData'>
                                                 <div>
-                                                    {(!item.Expences || item.Expences.length === 0) ? (
-                                                        item.data ? item.data.reduce((total, dataItem) => {
-                                                            if (dataItem) {
-                                                                return total + parseInt(dataItem.pricePerKilo);
-                                                            } else {
-                                                                return total;
-                                                            }
-                                                        }, 0) : 0
-                                                    ) : (
-                                                        (item.Expences && item.Expences.length > 0) ? (
-                                                            item.Expences.reduce((total, expenseItem) => {
-                                                                if (expenseItem && expenseItem.expenceVal !== null && expenseItem.expenceVal !== undefined) {
-                                                                    return total + parseFloat(expenseItem.expenceVal);
-                                                                }
-                                                                return total;
-                                                            }, 0) -
+                                                    {
+                                                        item &&
+                                                            (!item.Expences || item.Expences.length === 0) ? (
                                                             (item.data ? item.data.reduce((total, dataItem) => {
                                                                 if (dataItem) {
-                                                                    return total + (parseFloat(dataItem.pricePerKilo) || 0); // Ensure pricePerKilo is parsed as float
+                                                                    return total + parseFloat(dataItem.pricePerKilo);
                                                                 } else {
                                                                     return total;
                                                                 }
-                                                            }, 0) : 0)
+                                                            }, 0) : 0).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
                                                         ) : (
-                                                            item.data ? (
-                                                                item.data.reduce((total, dataItem) => {
-                                                                    return total + (parseFloat(dataItem.pricePerKilo) || 0);
-                                                                }, 0)
-                                                            ) : 0
+                                                            (item.Expences && item.Expences.length > 0) ? (
+                                                                item.Expences.reduce((total, expenseItem) => {
+                                                                    if (expenseItem && expenseItem.expenceVal !== null && expenseItem.expenceVal !== undefined) {
+                                                                        return total + parseFloat(expenseItem.expenceVal);
+                                                                    }
+                                                                    return total;
+                                                                }, 0) - (item.data ? item.data.reduce((total, dataItem) => {
+                                                                    if (dataItem) {
+                                                                        return total + parseFloat(dataItem.pricePerKilo * dataItem.productQuantity || 0);
+                                                                    } else {
+                                                                        return total;
+                                                                    }
+                                                                }, 0) : 0)
+                                                            ).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' })
+                                                                : (
+                                                                    item.data ? (
+                                                                        item.data.reduce((total, dataItem) => {
+                                                                            return total + parseFloat(dataItem.pricePerKilo || 0);
+                                                                        }, 0)
+                                                                    ) : 0
+                                                                )
                                                         )
-                                                    )}
+                                                    }
+
                                                 </div>
                                             </td>
                                             <td className='editBtnCon'>
