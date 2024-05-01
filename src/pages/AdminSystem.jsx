@@ -1,6 +1,6 @@
 import React from 'react'
 import Sidebar from '../comps/Sidebar'
-import AdminSidear from '../comps/AdminSidebar'
+import AdminSidear from './AdminSidebar'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged, } from 'firebase/auth'

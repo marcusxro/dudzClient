@@ -21,7 +21,7 @@ const CheckOut = () => {
     useEffect(() => {
         if (location.state) {
             setProducts(prevProducts => {
-                console.log(prevProducts); // Log the previous state
+
                 return location.state.product; // Update the state
             });
         } else {
@@ -48,22 +48,14 @@ const CheckOut = () => {
         axios.get('http://localhost:8080/GetAcc')
             .then((res) => {
                 const filteredData = res.data.filter((item) => item.Uid === uid);
-                setData(filteredData[0]);
-                setUserName(data.Username)
-                setEmail(data.Email)
-            }).catch((err) => {
-            });
-    }, [data]);
-
-    useEffect(() => {
-        axios.get('http://localhost:8080/GetInfo')
-            .then((res) => {
-                const filteredData = res.data.filter((item) => item.Uid === uid);
-                setInfo(filteredData.length === 0 ? null : filteredData);
+                setData(filteredData);
+                setUserName(filteredData[0]?.Username);
+                setEmail(filteredData[0]?.Email);
             }).catch((err) => {
                 console.log(err);
             });
-    }, [infoDetails, data]);
+    }, [data, uid]);
+
 
     const[infData, setInf] = useState([])
 
@@ -72,6 +64,7 @@ const CheckOut = () => {
             .then((res) => {
                 const filteredData = res.data.filter((item) => item.Uid === uid);
                 setInf(filteredData.length === 0 ? null : filteredData);
+                console.log(filteredData)
             }).catch((err) => {
                 console.log(err);
             });
@@ -130,9 +123,8 @@ const CheckOut = () => {
         }));
     }
     const [finalPrice, setFinal] = useState()
+    
     useEffect(() => {
-        console.log(products)
-
         const totalPrice = products.reduce((accumulator, itm) => accumulator + itm.totalPrice, 0)
         setFinal(totalPrice)
     }, [products])
@@ -143,17 +135,17 @@ const CheckOut = () => {
  
 
     const sendProductData = () => {
-        if (!infoDetails) {
+        if (!data) {
             return alert("Please check your info first (Address, Contact)");
         }
-
+        console.log(data.Email + data.Address)
         axios.post('http://localhost:8080/SendProduct', {
-            Email: data && data.Email, // Accessing email from data state
-            Username: data && data.Username, // Accessing username from data state
+            Email: data && data[0].Email, // Accessing email from data state
+            Username: data && data[0].Username, // Accessing username from data state
             Data: products,
             message: message,
-            ContactNum: infoDetails[0]?.Contact, // Using optional chaining
-            Address: infoDetails[0]?.Address, // Using optional chaining
+            ContactNum: data && data[0].Contact, // Using optional chaining
+            Address: data && data[0].Address,// Using optional chaining
             totalPrice: finalPrice,
             Date: Date.now(),
             Destination: "To Prepare",
@@ -179,8 +171,8 @@ const CheckOut = () => {
                     </div>
                 </header>
                 <div className="checkOutContent">
-                    {infoDetails ? infoDetails.map((itm, index) => (
-                        <div className="details" key={index}>
+                    {data ? data.map((itm) => (
+                        <div className="details" key={itm._id}>
                             <div className="firstDetails">
                                 {itm.Username}
                             </div>
@@ -234,7 +226,7 @@ const CheckOut = () => {
                             <div className="price">
                                 ₱<span>{finalPrice}</span>
                             </div>
-                            {infoDetails === null ?
+                            {data.length === 0 ?
                                 <button >You dont have any info!</button> :
                                 <button onClick={() => { sendProductData();  nav('/System/placedOrder', { state: { products } }) }}>Place order</button>
                             }

@@ -63,20 +63,10 @@ const Profile = () => {
     }, [infoDetails, data])
 
     const sendInfo = () => {
-
-        axios.post('http://localhost:8080/SendInfo', {
-            Address: Address,
-            Username: userName,
-            Contact: ContactNo,
-            Uid: uid,
-        }).then(() => {
-            console.log("details sent")
-        }).catch((err) => {
-            console.log(err)
-        })
-
         axios.put(` http://localhost:8080/ChangeName/${uid}`, {
             Username: userName,
+            Address: Address,
+            Contact: ContactNo,
         }).then(() => {
             console.log("details senst")
         }).catch((err) => {
@@ -151,10 +141,10 @@ const Profile = () => {
 
                         <div className="secondCon">
                             <div className="Address">
-                                Address: <span>{infoDetails ? infoDetails.Address : "No Address"}</span>
+                                Address: <span>{data ? data.Address : "No Address"}</span>
                             </div>
                             <div className="Address">
-                                Contact No: <span>{infoDetails ? infoDetails.Contact : "No Contact Number"}</span>
+                                Contact No: <span>{data ? data.Contact : "No Contact Number"}</span>
                             </div>
                         </div>
                     )}
@@ -176,8 +166,8 @@ const Profile = () => {
                             <div className="absoBtn" onClick={() => {
                                 setEdit(!isEdit);
                                 getVal(data.Username,
-                                    infoDetails ? infoDetails.Address : "",
-                                    infoDetails ? infoDetails.Contact : "")
+                                    data ? data.Address : "",
+                                    data ? data.Contact : "")
                             }}>
                                 <ion-icon name="create-outline"></ion-icon>
                             </div>

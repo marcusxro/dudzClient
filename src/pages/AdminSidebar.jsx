@@ -56,13 +56,13 @@ const AdminSidear = () => {
             </div>
 
             <header>
-                <div className="itemHeader" onClick={() => { nav('/System/adminsystem') }}>
+                <div className="itemHeader" onClick={() => { nav('/admin/adminsystem') }}>
                     <span><ion-icon name="bag-handle-outline"></ion-icon></span>   Dashboard
                 </div>
-                <div className="itemHeader" onClick={() => { nav('/System/AdminTask') }}>
+                <div className="itemHeader" onClick={() => { nav('/admin/AdminTask') }}>
                     <span><ion-icon name="person-outline"></ion-icon></span>  Task
                 </div>
-                <div className="itemHeader" onClick={() => { nav('/System/AdminInbox') }}>
+                <div className="itemHeader" onClick={() => { nav('/admin/AdminInbox') }}>
                     <span><ion-icon name="chatbubble-ellipses-outline"></ion-icon></span>   Inbox
                 </div>
             </header>

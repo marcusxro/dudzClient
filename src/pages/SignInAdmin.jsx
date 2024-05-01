@@ -23,7 +23,7 @@ const SignInAdmin = () => {
                     const user = userCredential.user;
                     setUser(user.uid);
                     console.log("WELCOME", user.email)
-                    nav('/System/AdminSystem')
+                    nav('/admin/AdminSystem')
 
                 }).catch((err) => {
                     if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/too-many-requests' || err.code === 'auth/invalid-credential') {
@@ -59,12 +59,6 @@ const SignInAdmin = () => {
                     Don't remember your password? <span onClick={() => { nav('/ForgotPassword') }}>go here!</span>
                 </div>
                 <button onClick={() => { signIn() }}>Sign in</button>
-                <div className="navis">
-                   Navigate back to <span onClick={() => { nav('/') }}>Customer side</span>
-                </div>
-                <div className="adminNav">
-                    Sign in as <span>admin</span>
-                </div>
             </div>
         </div>
     )

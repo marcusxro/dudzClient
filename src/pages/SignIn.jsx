@@ -84,13 +84,6 @@ const SignIn = () => {
                 <div className="navis">
                     Don't have account? <span onClick={() => { nav('/Register') }}>Sign up</span>
                 </div>
-                {isAdmin === true ? (
-                    <div className="adminNav">
-                       Navigate to <span onClick={() => { nav('/System/AdminSystem') }}>Admin</span>
-                    </div>
-                ) : (<div className="adminNav">
-                    Sign in as <span onClick={() => { nav('/System/SignInAdmin') }}>admin</span>
-                </div>)}
             </div>
         </div>
     )

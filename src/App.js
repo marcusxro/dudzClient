@@ -11,11 +11,10 @@ import Cart from './pages/Cart';
 import CheckOut from './pages/CheckOut';
 import PlacedOrder from './pages/PlacedOrder';
 import History from './pages/History';
-import SignInAdmin from './pages/SignInAdmin';
-import AdminSystem from './pages/AdminSystem';
+import SignInAdmin from './pages/SignInAdmin'
+import AdminSystem from './pages/AdminSystem'
 import AdminInbox from './pages/AdminInbox';
-import AdminTask from './pages/AdminTask';
-
+import AdminTask from './pages/AdminTask'
 
 function App() {
   return (
@@ -32,10 +31,14 @@ function App() {
         <Route path='/System/CheckOut' element={<CheckOut />} />
         <Route path='/System/placedOrder' element={<PlacedOrder />} />
         <Route path='/System/History' element={<History />} />
-        <Route path='/System/SignInAdmin' element={<SignInAdmin />} />
-        <Route path='/System/AdminSystem' element={<AdminSystem />} />
-        <Route path='/System/AdminInbox' element={<AdminInbox />} />
-        <Route path='/System/AdminTask' element={<AdminTask />} />
+        
+
+
+        {/* admin side routes */}
+        <Route path='/admin' element={<SignInAdmin />} />
+        <Route path='/admin/AdminSystem' element={<AdminSystem />} />
+        <Route path='/admin/AdminInbox' element={<AdminInbox />} />
+        <Route path='/admin/AdminTask' element={<AdminTask />} />
 {/* 
         <Route path='*'
           element={<NotFound />} /> */}

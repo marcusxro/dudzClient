@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import AdminSidear from '../comps/AdminSidebar'
+import AdminSidear from './AdminSidebar'
 import axios from 'axios'
 import moment from 'moment'
 

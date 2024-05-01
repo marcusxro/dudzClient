@@ -234,7 +234,31 @@ const Cart = () => {
                 break;
         }
     }
+    const deleteAllItem = async (itemName) => {
+        try {
+            // Get the IDs of all items to be deleted
+            const itemIdsToDelete = data.filter(item => item.Item === itemName).map(item => item._id);
 
+
+            // Make API call to delete the items from the cart
+            await axios.post('http://localhost:8080/DeleteCartItems', { itemId: itemIdsToDelete });
+    
+            // Filter out the deleted items from the data state
+            const updatedData = data.filter(item => item.Item !== itemName);
+    
+            // Calculate total price after deletion
+            const totalPriceAfterDeletion = updatedData.reduce((total, item) => total + parseFloat(item.Price), 0);
+    
+            // Update the state with the new data and total price
+            setData(updatedData);
+            setSelectedItemPrice(totalPriceAfterDeletion);
+            
+        } catch (error) {
+            console.error('Error deleting items:', error);
+        }
+    };
+    
+    
     return (
         <div className="cartCon">
             <Sidebar />
@@ -258,7 +282,7 @@ const Cart = () => {
                                     <div className="btnItem ac" onClick={(e) => { deleteItem(itemInfo.ItemId, 30, itemName); }}>
                                         <ion-icon name="remove-circle-outline" />
                                     </div>
-                                    <div className="btnItem">({itemInfo.quantity})</div>
+                                    <div className="btnItem">quantity: ({itemInfo.quantity})</div>
                                     <div className="btnItem ac" onClick={(e) => { AddCartItem(itemName, '30'); }}>
                                         <ion-icon name="add-circle-outline" />
                                     </div>
@@ -273,6 +297,7 @@ const Cart = () => {
                                         onChange={(e) => { setCheckedd(e.target.checked); handleCheckboxChange(itemName, e.target.checked, itemInfo.totalPrice, itemInfo); }} />
                                 </div>
                                 <div className="Price">Total Price: ₱{itemInfo.totalPrice.toFixed(2)}</div>
+                                <button onClick={() => {deleteAllItem(itemName)}}>Delete All</button> {/* Button to delete all items */}
                             </div>
                         </div>
                     ))}
