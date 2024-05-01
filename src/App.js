@@ -34,7 +34,7 @@ function App() {
         
 
 
-        {/* admin side routes */}
+        {/* admin side routess */}
         <Route path='/admin' element={<SignInAdmin />} />
         <Route path='/admin/AdminSystem' element={<AdminSystem />} />
         <Route path='/admin/AdminInbox' element={<AdminInbox />} />
